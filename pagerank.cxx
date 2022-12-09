@@ -1,4 +1,3 @@
-// Jackson Thetford, Luca Labardini, Mihiro Suzuki
 #include <iostream>
 #include <string>
 #include <vector>
@@ -814,32 +813,33 @@ class Web
 	int diameter()
 	{
 		
+		// for loop for starting page
+		// 	for loop for ending page
+		// 		while loop for if curr_page != ending page
+		//
+
 		auto currentPage = getPage(1);
 		auto startPage = getPage(1);
 		auto endPage = getPage(2);
 		int numSteps = 0;
 		int totalSteps;
-        int vecPosition = 0;
-        vector<int> shortestPath((netsize*netsize) - netsize); 
-        int longestPath = 0;
 
-        // 2 forloops to go from any page A to any Page B, while loop runs that specific walk many times to find shortest path.
 		for( int i = 0; i < netsize; i++){
 			startPage = getPage(i);		
 		
 			for (int j = 0; j < netsize; j++){
-		        totalSteps = 2*netsize;
-			    numSteps = 0;
+		           totalSteps = 2*netsize;
+			   numSteps = 0;
 		           	
-		        if ( j == i) { j++;}
-		        if (j>=netsize) {break;}	
-			    endPage = getPage(j);		    
+		            if ( j == i) { j++;}
+		            if (j>=netsize) {break;}	
+			      endPage = getPage(j);		    
 
-			    for (int w = 0; w < netsize*10; w++){ // similates the walk from page A to page B netsize*10 # of times to find shortest path from A to B
+			    for (int w = 0; w < netsize*10; w++){
 				while (currentPage != endPage){
- 	                numSteps++;
-                    currentPage = random_walk(currentPage, 1);
-				    if (numSteps >= netsize){break;}	
+ 	                              currentPage = random_walk(currentPage, 1);
+				      numSteps++;
+				      if (numSteps >= netsize){break;}	
 				}
 				if (numSteps < totalSteps){
 					totalSteps = numSteps;
@@ -847,23 +847,11 @@ class Web
 				numSteps = 0;
 				currentPage = startPage;
 			    }
-
-			   // cout << "Shortest path from page " << i << " to page " << j << " is " << totalSteps << std::endl; 
-               // Can use to see all shortest paths between any 2 pages
-                shortestPath[vecPosition] = totalSteps;
-                vecPosition++;
+			    cout << "Shortest path from page " << i << " to page " << j << " is " << totalSteps << std::endl;
 			}
 			
 		}
-        // find ths longest path from all the shortest paths
-        for (int i = 0; i < shortestPath.size(); i++){ 
-            if (shortestPath[i] > longestPath){
-                longestPath = shortestPath[i];
-            }
-        }
 
-        // cout << "Diameter is " << longestPath << endl;
-        return longestPath;
 	}
 
 
@@ -906,6 +894,9 @@ int main()
 
     Matrix a = internet.get_distMatrix();
     
+    
+
+
     ProbabilityDistribution v = ProbabilityDistribution(artificialSize);
     vector<double> vec = vector<double>(artificialSize, 0);
     
@@ -923,10 +914,8 @@ int main()
     int sum;
     int count = 0;
     double error;
-
-
-
-    while (maxErr > .00001 || count > 2000) // i added this or statement bc never ending loop was happening sometimes
+    
+    while (maxErr > .00001)
     {
         maxErr = 0;
         vec1 = v.getVec();
@@ -944,22 +933,25 @@ int main()
             }
         }
 
-        count++;
-        if (count == 1000){cout << "count > 1000";} 
-    }
 
+        
+        count++;
+    }
     
-// why is the output the way it is?
+    
     cout << "Artifically inflated\n" << v.as_string() << endl;
      
-    cout << "COUNT IS " <<  count << endl;
-// Diameter testing ... WORKS 
-    /*
-    int diam = internet.diameter();
-    cout << "The diameter of the internet is " << diam << endl;
-    */
+    //cout << count << endl;
+    
+
+
 
     
+    
+    
+
+    
+//    srand(time(NULL));
 /*
     vector<int> landing_counts(internet.number_of_pages(),0);
 //    for ( auto page : internet.all_pages() ) 
@@ -982,18 +974,19 @@ int main()
 
   }
   */
-    // Checking if internet is fully connected
-    auto connect = internet.fully_connected();
+    /*auto connect = internet.fully_connected();
     if(connect)
     {
-        int diam1 = internet.diameter();
-        cout << "Fully Connected: Diameter of the Internet is " << diam1 << endl;
+        // SHORTEST PATH CAN BE 0
+        // FIX WITH JACKSON
+        internet.diameter();
+        cout << "Fully Connected" << endl;
     }
     else
     {
         cout << "Multiple Connected Components" << endl;
     }
-    
+     */
 
     /* Testing probability distribution
     ProbabilityDistribution prob = ProbabilityDistribution(10);
